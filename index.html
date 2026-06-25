@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The System — Trading Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070708;
+    --surface:#0E0E11;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(124,77,255,0.5);
+    --text:#F4F4F6;
+    --muted:#8A8A94;
+    --accent:#7C4DFF;
+    --accent-soft: rgba(124,77,255,0.12);
+    --glass: rgba(255,255,255,0.035);
+    --glass-2: rgba(255,255,255,0.01);
+    --nav-bg: rgba(7,7,8,0.6);
+  }
+  [data-theme="light"]{
+    --bg:#F1EDFC;
+    --surface:#E7E0F8;
+    --border: rgba(76,29,149,0.14);
+    --border-strong: rgba(76,29,149,0.42);
+    --text:#1D1A2E;
+    --muted:#5C5570;
+    --accent:#5B21B6;
+    --accent-soft: rgba(91,33,182,0.12);
+    --glass: rgba(91,33,182,0.055);
+    --glass-2: rgba(91,33,182,0.015);
+    --nav-bg: rgba(241,237,252,0.78);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    position:relative;
+    padding-top:72px;
+    transition:background-color 0.3s ease, color 0.3s ease;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em;font-weight:600;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  /* ---------- ambient background ---------- */
+  .bg-mesh{
+    position:fixed;inset:0;z-index:-3;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(124,77,255,0.16), transparent 42%),
+      radial-gradient(circle at 88% 12%, rgba(124,77,255,0.10), transparent 48%),
+      radial-gradient(circle at 50% 100%, rgba(124,77,255,0.12), transparent 55%);
+    transition:opacity 0.3s ease;
+  }
+  [data-theme="light"] .bg-mesh{
+    background:
+      radial-gradient(circle at 12% 18%, rgba(91,33,182,0.16), transparent 42%),
+      radial-gradient(circle at 88% 10%, rgba(124,77,255,0.12), transparent 48%),
+      radial-gradient(circle at 50% 100%, rgba(91,33,182,0.14), transparent 55%),
+      linear-gradient(180deg, #EDE7FA 0%, #F1EDFC 40%, #F4F0FD 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-2;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(circle at 50% 0%, black 0%, transparent 65%);
+    opacity:0.5;
+  }
+  #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+
+  /* ---------- nav ---------- */
+  nav{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 24px;
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:var(--nav-bg);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{max-width:1120px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;}
+  .logo{font-weight:600;font-size:16px;display:flex;align-items:center;gap:9px;letter-spacing:-0.01em;}
+  .logo-mark{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .nav-links{display:flex;gap:32px;font-size:14px;color:var(--muted);}
+  .nav-links a{position:relative;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--text);}
+  @media(max-width:680px){.nav-links{display:none;}}
+
+  .nav-cta{
+    padding:9px 18px;font-size:13px;border-radius:6px;
+    border:1px solid var(--border);
+    background:var(--glass);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    transition:border-color 0.2s, color 0.2s;
+  }
+  .nav-cta:hover{border-color:var(--border-strong);}
+
+  /* ---------- theme toggle ---------- */
+  .theme-toggle{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-right:14px;
+  }
+  .switch{
+    position:relative;width:42px;height:24px;flex-shrink:0;
+  }
+  .switch input{opacity:0;width:0;height:0;position:absolute;}
+  .switch .track{
+    position:absolute;inset:0;border-radius:20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    transition:background 0.25s, border-color 0.25s;
+    cursor:pointer;
+  }
+  .switch .thumb{
+    position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+    background:var(--accent);
+    transition:transform 0.25s ease;
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;
+  }
+  .switch input:checked + .track .thumb{transform:translateX(18px);}
+  @media(max-width:680px){.theme-toggle span.tt-label{display:none;}}
+
+  /* ---------- hero / globe ---------- */
+  .hero{
+    position:relative;padding:60px 24px 0;text-align:center;
+  }
+  .hero-content{position:relative;z-index:2;max-width:680px;margin:0 auto;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);
+    letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.25;}}
+  .hero h1{
+    font-size:clamp(32px,5.6vw,54px);line-height:1.1;
+    margin:0 auto 20px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(120deg, var(--accent), #B388FF 50%, var(--accent));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    background-size:200% auto;animation:shine 5s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+  .hero p.sub{color:var(--muted);font-size:16px;max-width:480px;margin:0 auto 32px;}
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+  .btn{
+    display:inline-block;padding:13px 26px;border-radius:8px;font-weight:600;font-size:14px;
+    transition:transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 26px -8px rgba(124,77,255,0.55);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px -8px rgba(124,77,255,0.7);}
+  .btn-ghost{
+    border:1px solid var(--border);color:var(--text);
+    background:var(--glass);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .btn-ghost:hover{border-color:var(--border-strong);transform:translateY(-2px);}
+
+  .map-stage{
+    position:relative;width:100%;max-width:980px;margin:30px auto 0;
+    height:420px;display:flex;align-items:center;justify-content:center;
+  }
+  @media(max-width:780px){.map-stage{height:300px;}}
+  @media(max-width:480px){.map-stage{height:230px;}}
+  #globe{width:100%;height:100%;display:block;}
+
+  .stat-line{
+    display:flex;justify-content:center;gap:36px;flex-wrap:wrap;
+    padding:18px 24px 70px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+    letter-spacing:0.02em;position:relative;z-index:2;
+  }
+  .stat-line strong{color:var(--text);font-weight:600;}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease, transform 0.6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- sections ---------- */
+  section{padding:88px 0;}
+  .section-label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);
+    text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .section-label::before{content:'';width:16px;height:1px;background:var(--accent);}
+  .section-title{font-size:clamp(24px,3.6vw,34px);margin-bottom:14px;max-width:560px;}
+  .section-sub{color:var(--muted);max-width:520px;font-size:15px;margin-bottom:50px;}
+
+  .divider{height:1px;background:var(--border);}
+
+  /* ---------- problem cards ---------- */
+  .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media(max-width:780px){.problem-grid{grid-template-columns:1fr;}}
+  .pcard{
+    background:linear-gradient(160deg, var(--glass), var(--glass-2));
+    border:1px solid var(--border);border-radius:16px;padding:30px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .pcard:hover{transform:translateY(-5px);border-color:var(--border-strong);box-shadow:0 20px 50px -25px rgba(124,77,255,0.4);}
+  .pcard .num{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:12px;margin-bottom:16px;}
+  .pcard h3{font-size:17px;margin-bottom:8px;font-weight:600;}
+  .pcard p{color:var(--muted);font-size:14px;}
+
+  /* ---------- pricing ---------- */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .pricing-grid-2{grid-template-columns:1fr 1.15fr;max-width:880px;margin:0 auto;}
+  @media(max-width:900px){.pricing-grid{grid-template-columns:1fr;}.pricing-grid-2{grid-template-columns:1fr;}}
+  .price-card{
+    background:linear-gradient(160deg, var(--glass), var(--glass-2));
+    border:1px solid var(--border);border-radius:18px;padding:30px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    display:flex;flex-direction:column;position:relative;
+    transition:border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .price-card:hover{transform:translateY(-5px);border-color:var(--border-strong);}
+  .price-card.featured{
+    border-color:var(--accent);
+    background:linear-gradient(160deg, rgba(124,77,255,0.10), var(--glass-2));
+    box-shadow:0 0 0 1px rgba(124,77,255,0.25), 0 30px 70px -30px rgba(124,77,255,0.45);
+  }
+  .badge{
+    position:absolute;top:-11px;left:30px;
+    background:var(--accent);color:#fff;font-size:10px;font-weight:600;
+    padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;
+    box-shadow:0 4px 16px -2px rgba(124,77,255,0.65);
+  }
+  .price-tier-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+  .price-card h3{font-size:20px;margin-bottom:6px;}
+  .price-amount{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;margin:14px 0 4px;}
+  .price-amount span{font-size:14px;color:var(--muted);font-weight:400;}
+  .price-renew{font-size:12px;color:var(--accent);margin:-2px 0 14px;}
+  .price-desc{color:var(--muted);font-size:13px;margin-bottom:24px;}
+  .feature-list{list-style:none;margin-bottom:26px;flex-grow:1;}
+  .feature-list li{display:flex;gap:9px;font-size:13.5px;color:var(--text);margin-bottom:12px;align-items:flex-start;}
+  .feature-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0;}
+  .price-card .btn{text-align:center;width:100%;}
+
+  /* ---------- faq ---------- */
+  .faq-item{border-bottom:1px solid var(--border);padding:20px 2px;}
+  .faq-item summary{
+    cursor:pointer;font-weight:600;font-size:15px;
+    display:flex;justify-content:space-between;align-items:center;list-style:none;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+';color:var(--accent);font-size:18px;font-family:'JetBrains Mono',monospace;}
+  .faq-item[open] summary::after{content:'–';}
+  .faq-item p{color:var(--muted);margin-top:13px;font-size:13.5px;max-width:640px;}
+
+  /* ---------- final cta ---------- */
+  .final-cta{
+    text-align:center;
+    background:linear-gradient(160deg, rgba(124,77,255,0.10), var(--glass-2));
+    border:1px solid var(--border-strong);border-radius:18px;
+    padding:60px 32px;position:relative;overflow:hidden;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  }
+  .final-cta::before{
+    content:'';position:absolute;top:-60%;left:50%;width:560px;height:560px;
+    background:radial-gradient(circle, rgba(124,77,255,0.22), transparent 70%);
+    transform:translateX(-50%);pointer-events:none;
+  }
+  .final-cta h2, .final-cta p, .final-cta a{position:relative;z-index:1;}
+  .final-cta h2{font-size:clamp(24px,3.6vw,32px);margin-bottom:12px;}
+  .final-cta p{color:var(--muted);margin-bottom:28px;}
+
+  footer{padding:40px 24px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid var(--border);margin-top:40px;}
+
+  #pricing, #vault, #faq{scroll-margin-top:90px;}
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="grid-overlay"></div>
+<canvas id="stars"></canvas>
+
+<nav>
+<div class="nav-inner">
+  <div class="logo"><span class="logo-mark"></span>THE SYSTEM</div>
+  <div class="nav-links">
+    <a href="#pricing">Pricing</a>
+    <a href="#vault">Membership</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div style="display:flex;align-items:center;">
+    <div class="theme-toggle">
+      <span class="tt-label mono" style="font-size:11px;color:var(--muted);">DARK</span>
+      <label class="switch">
+        <input type="checkbox" id="themeSwitch" aria-label="Toggle light and dark mode">
+        <div class="track"><div class="thumb mono">●</div></div>
+      </label>
+    </div>
+    <a href="https://t.me/Thesystempaymentbot" class="nav-cta">Get Started</a>
+  </div>
+</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="eyebrow"><span class="dot"></span> A SYSTEM, NOT A SIGNAL</div>
+    <h1>Stop guessing. Start trading with a <span class="accent">system that actually works.</span></h1>
+    <p class="sub">The exact strategy I use to trade the markets — taught step by step, so you can execute with confidence, on your own, for the rest of your trading career.</p>
+    <div class="cta-row">
+      <a href="#pricing" class="btn btn-primary">See pricing</a>
+      <a href="#vault" class="btn btn-ghost">What's in the membership?</a>
+    </div>
+  </div>
+
+  <div class="map-stage">
+    <canvas id="globe"></canvas>
+  </div>
+
+  <div class="stat-line mono">
+    <span><strong>700+</strong> members</span>
+    <span><strong>40+</strong> countries</span>
+    <span><strong>1</strong> system, no signals</span>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-label reveal">The problem</div>
+    <h2 class="section-title reveal">You don't need more information. You need one system.</h2>
+    <p class="section-sub reveal">Most traders fail not because the market is unreadable — but because they're stitching together random tips, copying signals they don't understand, and switching strategies every time one trade goes wrong.</p>
+    <div class="problem-grid">
+      <div class="pcard reveal">
+        <div class="num mono">01 — Structure</div>
+        <h3>Strategy-hopping</h3>
+        <p>Jumping between indicators and "secret" setups with no consistent framework to fall back on.</p>
+      </div>
+      <div class="pcard reveal">
+        <div class="num mono">02 — Ownership</div>
+        <h3>Signal dependency</h3>
+        <p>Copying someone else's calls without understanding why — so when the signals stop, so does the edge.</p>
+      </div>
+      <div class="pcard reveal">
+        <div class="num mono">03 — Data</div>
+        <h3>No real tracking</h3>
+        <p>Trading without journaling means every loss looks random and every win looks like luck.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-label reveal">Choose your tier</div>
+    <h2 class="section-title reveal">Learn the system. Stay sharp for as long as you trade.</h2>
+    <p class="section-sub reveal">No signals to depend on, no mentorship calls to schedule. Join once, then a small monthly renewal keeps your access — and the content library — growing.</p>
+
+    <div class="pricing-grid pricing-grid-2">
+      <div class="price-card reveal">
+        <div class="price-tier-label">Core</div>
+        <h3>The Course</h3>
+        <div class="price-amount">$50 <span>one-time</span></div>
+        <p class="price-desc">The foundation — everything you need to understand and start applying the strategy.</p>
+        <ul class="feature-list">
+          <li>Complete strategy framework, step by step</li>
+          <li>How to identify setups with confidence</li>
+          <li>Risk management rules that keep you in the game</li>
+          <li>Lifetime access to this course</li>
+        </ul>
+        <a href="#" class="btn btn-ghost" data-checkout="core">Get the Core Course</a>
+      </div>
+
+      <div class="price-card featured reveal" id="vault">
+        <div class="badge">Most popular</div>
+        <div class="price-tier-label">Full System Membership</div>
+        <h3>The Full System</h3>
+        <div class="price-amount">$197 <span>to join</span></div>
+        <p class="price-renew mono">then $25/mo to stay active</p>
+        <p class="price-desc">Everything in Core, plus the deeper material I use to refine my own trading — and ongoing access that keeps growing for as long as you're a member.</p>
+        <ul class="feature-list">
+          <li>Everything in the Core Course</li>
+          <li>Advanced setups beyond the basics</li>
+          <li>Full backtest breakdowns across market conditions</li>
+          <li>Trade Journal Template included free</li>
+          <li>Weekly market breakdown videos, ongoing</li>
+          <li>Trade review videos from my own trading</li>
+          <li>Private Discord with other serious traders</li>
+          <li>Growing content archive — cancel the membership anytime</li>
+        </ul>
+        <a href="#" class="btn btn-primary" data-checkout="complete">Join the Full System</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-label reveal">Questions</div>
+    <h2 class="section-title reveal">Before you start</h2>
+
+    <details class="faq-item reveal" open>
+      <summary>Is this signals or copy trading?</summary>
+      <p>No. This is education. You learn the system and make your own decisions — that's what builds real, lasting skill instead of dependency.</p>
+    </details>
+    <details class="faq-item reveal">
+      <summary>Do I need experience to start?</summary>
+      <p>The Core Course assumes basic market familiarity. If you're brand new, expect a slightly steeper learning curve — but the framework is built to be followed step by step.</p>
+    </details>
+    <details class="faq-item reveal">
+      <summary>What if it doesn't work for me?</summary>
+      <p>[Insert your refund/access policy here. Keep it about access and satisfaction — avoid wording that implies guaranteed profits or performance.]</p>
+    </details>
+    <details class="faq-item reveal">
+      <summary>What happens if I stop paying the $25/month?</summary>
+      <p>You keep what you've already learned, but ongoing membership access — new breakdowns, trade reviews, and the Discord — pauses until you renew.</p>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final-cta reveal">
+      <h2>You've spent enough time guessing.</h2>
+      <p>Get the system, learn it properly, and start trading with a plan.</p>
+      <a href="#pricing" class="btn btn-primary">Choose your plan</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> The System. All trading involves risk. Educational content only — not financial advice.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- theme toggle ---------- */
+  const root = document.documentElement;
+  const themeSwitch = document.getElementById('themeSwitch');
+  const ttLabel = document.querySelector('.tt-label');
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    themeSwitch.checked = (t === 'light');
+    if (ttLabel) ttLabel.textContent = t === 'light' ? 'LIGHT' : 'DARK';
+    try { localStorage.setItem('site-theme', t); } catch (e) {}
+  }
+  let initial = 'dark';
+  try {
+    const saved = localStorage.getItem('site-theme');
+    if (saved === 'light' || saved === 'dark') initial = saved;
+  } catch (e) {}
+  applyTheme(initial);
+  themeSwitch.addEventListener('change', () => applyTheme(themeSwitch.checked ? 'light' : 'dark'));
+
+  /* ---------- checkout links ---------- */
+  const CHECKOUT_LINKS = {
+    core: "https://t.me/Thesystempaymentbot?start=core",
+    complete: "https://t.me/Thesystempaymentbot?start=full"
+  };
+  document.querySelectorAll('[data-checkout]').forEach(btn => {
+    const key = btn.getAttribute('data-checkout');
+    if (CHECKOUT_LINKS[key]) btn.setAttribute('href', CHECKOUT_LINKS[key]);
+  });
+
+  /* ---------- scroll reveal ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ---------- ambient star field ---------- */
+  const starsCanvas = document.getElementById('stars');
+  const sctx = starsCanvas.getContext('2d');
+  let starParticles = [];
+  function resizeStars(){
+    starsCanvas.width = window.innerWidth;
+    starsCanvas.height = window.innerHeight;
+  }
+  resizeStars();
+  window.addEventListener('resize', resizeStars);
+
+  const starCount = window.innerWidth < 700 ? 40 : 90;
+  for (let i = 0; i < starCount; i++) {
+    starParticles.push({
+      x: Math.random() * starsCanvas.width,
+      y: Math.random() * starsCanvas.height,
+      r: Math.random() * 1.4 + 0.3,
+      vy: Math.random() * 0.18 + 0.03,
+      baseO: Math.random() * 0.5 + 0.15,
+      twinkle: Math.random() * Math.PI * 2
+    });
+  }
+  function drawStars(){
+    sctx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+    const light = root.getAttribute('data-theme') === 'light';
+    starParticles.forEach(p => {
+      p.y -= p.vy;
+      p.twinkle += 0.02;
+      if (p.y < -10) { p.y = starsCanvas.height + 10; p.x = Math.random() * starsCanvas.width; }
+      const o = p.baseO * (0.6 + 0.4 * Math.sin(p.twinkle));
+      sctx.beginPath();
+      sctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      sctx.fillStyle = light ? `rgba(76,29,149,${o * 0.6})` : `rgba(124,77,255,${o})`;
+      sctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  /* ---------- rotating globe ---------- */
+  const canvas = document.getElementById('globe');
+  const ctx = canvas.getContext('2d');
+  let W, H, R, CX, CY;
+
+  function resizeGlobe() {
+    const stage = canvas.parentElement;
+    const dpr = window.devicePixelRatio || 1;
+    W = stage.clientWidth;
+    H = stage.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    R = Math.min(W, H) * 0.42;
+    CX = W / 2;
+    CY = H / 2;
+  }
+  window.addEventListener('resize', resizeGlobe);
+  resizeGlobe();
+
+  const regions = [
+    [15, 68, -168, -52],
+    [-56, 12, -82, -34],
+    [36, 70, -10, 40],
+    [-35, 37, -18, 50],
+    [5, 70, 40, 150],
+    [-10, 25, 95, 140],
+    [-44, -10, 112, 154],
+  ];
+
+  const deg = Math.PI / 180;
+  const dots = [];
+  regions.forEach(([latMin, latMax, lonMin, lonMax]) => {
+    const area = (latMax - latMin) * (lonMax - lonMin);
+    const n = Math.max(18, Math.round(area / 14));
+    for (let i = 0; i < n; i++) {
+      if (Math.random() > 0.62) continue;
+      const lat = (latMin + Math.random() * (latMax - latMin)) * deg;
+      const lon = (lonMin + Math.random() * (lonMax - lonMin)) * deg;
+      dots.push({ lat, lon });
+    }
+  });
+
+  function toVec(lat, lon) {
+    return {
+      x: Math.cos(lat) * Math.sin(lon),
+      y: Math.sin(lat),
+      z: Math.cos(lat) * Math.cos(lon)
+    };
+  }
+  dots.forEach(d => { const v = toVec(d.lat, d.lon); d.vx = v.x; d.vy = v.y; d.vz = v.z; });
+
+  function rotateY(v, theta) {
+    const cos = Math.cos(theta), sin = Math.sin(theta);
+    return { x: v.x * cos + v.z * sin, y: v.y, z: -v.x * sin + v.z * cos };
+  }
+  function project(v) {
+    return { x: CX + v.x * R, y: CY - v.y * R, z: v.z };
+  }
+  function slerp(a, b, t) {
+    const dot = Math.max(-1, Math.min(1, a.x*b.x + a.y*b.y + a.z*b.z));
+    const omega = Math.acos(dot);
+    if (omega < 1e-6) return a;
+    const s1 = Math.sin((1 - t) * omega) / Math.sin(omega);
+    const s2 = Math.sin(t * omega) / Math.sin(omega);
+    return { x: a.x*s1 + b.x*s2, y: a.y*s1 + b.y*s2, z: a.z*s1 + b.z*s2 };
+  }
+
+  let connections = [];
+  function buildConnection() {
+    const a = dots[Math.floor(Math.random() * dots.length)];
+    let b = dots[Math.floor(Math.random() * dots.length)];
+    let tries = 0;
+    while (b === a && tries < 5) { b = dots[Math.floor(Math.random() * dots.length)]; tries++; }
+    const va = { x: a.vx, y: a.vy, z: a.vz };
+    const vb = { x: b.vx, y: b.vy, z: b.vz };
+    const steps = 28;
+    const path = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const p = slerp(va, vb, t);
+      const lift = 1 + Math.sin(t * Math.PI) * 0.06;
+      path.push({ x: p.x * lift, y: p.y * lift, z: p.z * lift });
+    }
+    return { path, born: performance.now(), life: 3200 + Math.random() * 800 };
+  }
+  function maybeSpawn() {
+    if (connections.length < 5 && Math.random() > 0.4) connections.push(buildConnection());
+    setTimeout(maybeSpawn, 500 + Math.random() * 700);
+  }
+  maybeSpawn();
+
+  function isLight() { return root.getAttribute('data-theme') === 'light'; }
+
+  let theta = 0;
+  function drawGrid() {
+    ctx.strokeStyle = isLight() ? 'rgba(76,29,149,0.12)' : 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(CX, CY, R, 0, Math.PI * 2);
+    ctx.stroke();
+    [-40, 0, 40].forEach(latDeg => {
+      const lat = latDeg * deg;
+      ctx.beginPath();
+      let started = false;
+      for (let lonDeg = 0; lonDeg <= 360; lonDeg += 6) {
+        const lon = lonDeg * deg;
+        const v = rotateY(toVec(lat, lon), theta);
+        if (v.z < -0.05) { started = false; continue; }
+        const p = project(v);
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    });
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    theta += 0.0026;
+    drawGrid();
+    const light = isLight();
+
+    dots.forEach(d => {
+      const r = rotateY({ x: d.vx, y: d.vy, z: d.vz }, theta);
+      if (r.z < -0.15) return;
+      const p = project(r);
+      const depth = Math.max(0, (r.z + 0.15) / 1.15);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.3, 0, Math.PI * 2);
+      ctx.fillStyle = light
+        ? `rgba(45,25,80,${0.14 + depth * 0.38})`
+        : `rgba(255,255,255,${0.12 + depth * 0.35})`;
+      ctx.fill();
+    });
+
+    const now = performance.now();
+    connections = connections.filter(c => now - c.born < c.life);
+    connections.forEach(c => {
+      const age = now - c.born;
+      const lifeT = age / c.life;
+      const fade = lifeT < 0.15 ? lifeT / 0.15 : (lifeT > 0.8 ? (1 - lifeT) / 0.2 : 1);
+
+      ctx.beginPath();
+      let started = false;
+      c.path.forEach(pt => {
+        const r = rotateY(pt, theta);
+        if (r.z < -0.05) { started = false; return; }
+        const p = project(r);
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y);
+      });
+      ctx.strokeStyle = light ? `rgba(91,33,182,${0.6 * fade})` : `rgba(124,77,255,${0.55 * fade})`;
+      ctx.lineWidth = 1.1;
+      ctx.stroke();
+
+      const pulseIdx = Math.floor(lifeT * (c.path.length - 1));
+      const pt = c.path[Math.max(0, Math.min(c.path.length - 1, pulseIdx))];
+      const r = rotateY(pt, theta);
+      if (r.z > -0.05) {
+        const p = project(r);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = light ? `rgba(45,25,80,${0.95 * fade})` : `rgba(183,156,255,${0.9 * fade})`;
+        ctx.fill();
+      }
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+</script>
+
+</body>
+</html>
