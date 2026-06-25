@@ -1,0 +1,112 @@
+[
+  {
+    "order_id": "6152916799-1782214099",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "full",
+    "method": "crypto",
+    "amount": "$197",
+    "status": "rejected",
+    "timestamp": "2026-06-23T12:28:19.032297"
+  },
+  {
+    "order_id": "6749174521-1782214542",
+    "user_id": 6749174521,
+    "username": "davidmartins01",
+    "first_name": "Junor",
+    "product": "core",
+    "method": "crypto",
+    "amount": "$50",
+    "status": "approved",
+    "timestamp": "2026-06-23T12:35:42.992795"
+  },
+  {
+    "order_id": "6152916799-1782287857",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "full",
+    "method": "crypto_usdt_erc20",
+    "amount": "$197",
+    "status": "pending",
+    "timestamp": "2026-06-24T08:57:37.781874"
+  },
+  {
+    "order_id": "6152916799-1782287892",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "full",
+    "method": "crypto_usdt_erc20",
+    "amount": "$197",
+    "status": "approved",
+    "timestamp": "2026-06-24T08:58:12.291587"
+  },
+  {
+    "order_id": "6152916799-1782288313",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "full",
+    "method": "bank",
+    "amount": "$197",
+    "status": "approved",
+    "timestamp": "2026-06-24T09:05:13.459567"
+  },
+  {
+    "order_id": "6152916799-1782288344",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "core",
+    "method": "bank",
+    "amount": "$50",
+    "status": "approved",
+    "timestamp": "2026-06-24T09:05:44.446878"
+  },
+  {
+    "order_id": "6152916799-1782289136",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "full",
+    "method": "crypto_usdt_trc20",
+    "amount": "$197",
+    "status": "approved",
+    "timestamp": "2026-06-24T09:18:56.953131"
+  },
+  {
+    "order_id": "6152916799-1782289229",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "core",
+    "method": "bank",
+    "amount": "$50",
+    "status": "approved",
+    "timestamp": "2026-06-24T09:20:29.432639"
+  },
+  {
+    "order_id": "6152916799-1782290152",
+    "user_id": 6152916799,
+    "username": "connellux",
+    "first_name": "\ud835\ude4b\ud835\ude67\ud835\ude56\ud835\ude5e$\ud835\ude5a",
+    "product": "core",
+    "method": "bank",
+    "amount": "$50",
+    "status": "approved",
+    "timestamp": "2026-06-24T09:35:52.452699"
+  },
+  {
+    "order_id": "6749174521-1782290219",
+    "user_id": 6749174521,
+    "username": "davidmartins01",
+    "first_name": "Junor",
+    "product": "full",
+    "method": "crypto_usdt_erc20",
+    "amount": "$197",
+    "status": "approved",
+    "timestamp": "2026-06-24T09:36:59.626866"
+  }
+]

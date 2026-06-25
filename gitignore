@@ -1,0 +1,9 @@
+# Never commit your real secrets
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Your running order log (local data, not code — don't push this either)
+orders.json
