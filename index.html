@@ -174,6 +174,42 @@
     position:relative;width:100%;max-width:980px;margin:30px auto 0;
     height:420px;display:flex;align-items:center;justify-content:center;
   }
+  .map-stage::before{
+    content:'';
+    position:absolute;
+    width:min(70%, 360px);height:min(70%, 360px);
+    border-radius:50%;
+    background:radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    filter:blur(20px);
+    z-index:0;
+  }
+  .flag-chip{
+    position:absolute;
+    display:flex;align-items:center;gap:6px;
+    background:var(--glass);
+    border:1px solid var(--border);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-radius:8px;padding:5px 10px;
+    font-size:12px;font-weight:600;color:var(--text);
+    z-index:3;
+    white-space:nowrap;
+  }
+  .flag-chip .flag-emoji{font-size:14px;line-height:1;}
+  .flag-line{
+    position:absolute;
+    background:var(--border-strong);
+    height:1px;
+    transform-origin:left center;
+    z-index:2;
+    opacity:0.6;
+  }
+  .flag-dot{
+    position:absolute;width:5px;height:5px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 8px var(--accent);
+    z-index:2;
+  }
+  @media(max-width:640px){.flag-chip, .flag-line, .flag-dot{display:none;}}
   @media(max-width:780px){.map-stage{height:300px;}}
   @media(max-width:480px){.map-stage{height:230px;}}
   #globe{width:100%;height:100%;display:block;}
@@ -315,7 +351,7 @@
   <div class="hero-content">
     <div class="eyebrow"><span class="dot"></span> A SYSTEM, NOT A SIGNAL</div>
     <h1>Stop guessing. Start trading with a <span class="accent">system that actually works.</span></h1>
-    <p class="sub">The exact strategy I use to trade the markets — taught step by step, so you can execute with confidence, on your own, for the rest of your trading career.</p>
+    <p class="sub">The exact strategy I use to trade the markets taught step by step, so you can execute with confidence, on your own, for the rest of your trading career.</p>
     <div class="cta-row">
       <a href="#pricing" class="btn btn-primary">See pricing</a>
       <a href="#vault" class="btn btn-ghost">What's in the membership?</a>
@@ -324,6 +360,26 @@
 
   <div class="map-stage">
     <canvas id="globe"></canvas>
+
+    <div class="flag-line" style="top:18%; left:50%; width:90px; transform:rotate(-25deg);"></div>
+    <div class="flag-dot" style="top:18%; left:50%;"></div>
+    <div class="flag-chip" style="top:8%; left:38%;"><span class="flag-emoji">🇺🇸</span> United States</div>
+
+    <div class="flag-line" style="top:32%; left:32%; width:70px; transform:rotate(160deg);"></div>
+    <div class="flag-dot" style="top:32%; left:32%;"></div>
+    <div class="flag-chip" style="top:25%; left:4%;"><span class="flag-emoji">🇬🇧</span> United Kingdom</div>
+
+    <div class="flag-line" style="top:30%; left:68%; width:70px; transform:rotate(20deg);"></div>
+    <div class="flag-dot" style="top:30%; left:68%;"></div>
+    <div class="flag-chip" style="top:22%; left:78%;"><span class="flag-emoji">🇮🇳</span> India</div>
+
+    <div class="flag-line" style="top:68%; left:35%; width:70px; transform:rotate(-150deg);"></div>
+    <div class="flag-dot" style="top:68%; left:35%;"></div>
+    <div class="flag-chip" style="top:78%; left:6%;"><span class="flag-emoji">🇳🇬</span> Nigeria</div>
+
+    <div class="flag-line" style="top:66%; left:70%; width:75px; transform:rotate(-15deg);"></div>
+    <div class="flag-dot" style="top:66%; left:70%;"></div>
+    <div class="flag-chip" style="top:78%; left:80%;"><span class="flag-emoji">🇺🇬</span> Uganda</div>
   </div>
 
   <div class="stat-line mono">
@@ -339,7 +395,7 @@
   <div class="wrap">
     <div class="section-label reveal">The problem</div>
     <h2 class="section-title reveal">You don't need more information. You need one system.</h2>
-    <p class="section-sub reveal">Most traders fail not because the market is unreadable — but because they're stitching together random tips, copying signals they don't understand, and switching strategies every time one trade goes wrong.</p>
+    <p class="section-sub reveal">Most traders fail not because the market is unreadable, but because they're stitching together random tips, copying signals they don't understand, and switching strategies every time one trade goes wrong.</p>
     <div class="problem-grid">
       <div class="pcard reveal">
         <div class="num mono">01 — Structure</div>
@@ -349,7 +405,7 @@
       <div class="pcard reveal">
         <div class="num mono">02 — Ownership</div>
         <h3>Signal dependency</h3>
-        <p>Copying someone else's calls without understanding why — so when the signals stop, so does the edge.</p>
+        <p>Copying someone else's calls without understanding why, so when the signals stop, so does the edge.</p>
       </div>
       <div class="pcard reveal">
         <div class="num mono">03 — Data</div>
@@ -366,14 +422,14 @@
   <div class="wrap">
     <div class="section-label reveal">Choose your tier</div>
     <h2 class="section-title reveal">Learn the system. Stay sharp for as long as you trade.</h2>
-    <p class="section-sub reveal">No signals to depend on, no mentorship calls to schedule. Join once, then a small monthly renewal keeps your access — and the content library — growing.</p>
+    <p class="section-sub reveal">No signals to depend on, no mentorship calls to schedule. Join once, then a small monthly renewal keeps your access and the content library growing.</p>
 
     <div class="pricing-grid pricing-grid-2">
       <div class="price-card reveal">
         <div class="price-tier-label">Core</div>
         <h3>The Course</h3>
         <div class="price-amount">$50 <span>one-time</span></div>
-        <p class="price-desc">The foundation — everything you need to understand and start applying the strategy.</p>
+        <p class="price-desc">The foundation and everything you need to understand and start applying the strategy.</p>
         <ul class="feature-list">
           <li>Complete strategy framework, step by step</li>
           <li>How to identify setups with confidence</li>
@@ -389,7 +445,7 @@
         <h3>The Full System</h3>
         <div class="price-amount">$197 <span>to join</span></div>
         <p class="price-renew mono">then $25/mo to stay active</p>
-        <p class="price-desc">Everything in Core, plus the deeper material I use to refine my own trading — and ongoing access that keeps growing for as long as you're a member.</p>
+        <p class="price-desc">Everything in Core, plus the deeper material I use to refine my own trading and ongoing access that keeps growing for as long as you're a member.</p>
         <ul class="feature-list">
           <li>Everything in the Core Course</li>
           <li>Advanced setups beyond the basics</li>
@@ -415,19 +471,19 @@
 
     <details class="faq-item reveal" open>
       <summary>Is this signals or copy trading?</summary>
-      <p>No. This is education. You learn the system and make your own decisions — that's what builds real, lasting skill instead of dependency.</p>
+      <p>No. This is education. You learn the system and make your own decisions, that's what builds real, lasting skill instead of dependency.</p>
     </details>
     <details class="faq-item reveal">
       <summary>Do I need experience to start?</summary>
-      <p>The Core Course assumes basic market familiarity. If you're brand new, expect a slightly steeper learning curve — but the framework is built to be followed step by step.</p>
+      <p>The Core Course assumes basic market familiarity. If you're brand new, expect a slightly steeper learning curve but the framework is built to be followed step by step.</p>
     </details>
     <details class="faq-item reveal">
       <summary>What if it doesn't work for me?</summary>
-      <p>[Insert your refund/access policy here. Keep it about access and satisfaction — avoid wording that implies guaranteed profits or performance.]</p>
+      <p>Trading outcomes depend on you, your execution, discipline, and risk management not just the information itself, so I can't offer refunds based on results. What I can guarantee is the quality and clarity of what's taught: a complete, well-structured system, explained properly. If you go through the material and apply it consistently and still feel it wasn't explained clearly or wasn't what was promised, message me directly and I'll work with you on it.</p>
     </details>
     <details class="faq-item reveal">
       <summary>What happens if I stop paying the $25/month?</summary>
-      <p>You keep what you've already learned, but ongoing membership access — new breakdowns, trade reviews, and the Discord — pauses until you renew.</p>
+      <p>You keep what you've already learned, but ongoing membership access, new breakdowns, trade reviews, and the Discord pauses until you renew.</p>
     </details>
   </div>
 </section>
@@ -546,26 +602,54 @@
   window.addEventListener('resize', resizeGlobe);
   resizeGlobe();
 
+  // Each continent is built from many thin latitude bands, each with its
+  // own [lonMin, lonMax] — narrower or wider per band to taper the shape
+  // the way the real coastline does (e.g. South America narrowing to a
+  // point, Africa's horn bulging east, Central America pinching narrow).
   const regions = [
-    [15, 68, -168, -52],
-    [-56, 12, -82, -34],
-    [36, 70, -10, 40],
-    [-35, 37, -18, 50],
-    [5, 70, 40, 150],
-    [-10, 25, 95, 140],
-    [-44, -10, 112, 154],
+    // North America
+    [75, 68, -168, -60], [68, 60, -165, -55], [60, 52, -145, -55],
+    [52, 45, -130, -55], [45, 38, -124, -68], [38, 31, -119, -78],
+    [31, 24, -113, -86], [24, 17, -106, -86], [17, 10, -93, -83],
+    [10, 7, -86, -82],
+    // South America
+    [10, 2, -80, -58], [2, -6, -81, -35], [-6, -15, -79, -35],
+    [-15, -23, -72, -40], [-23, -31, -71, -48], [-31, -39, -71, -56],
+    [-39, -47, -73, -62], [-47, -55, -74, -66],
+    // Europe
+    [71, 62, -10, 32], [62, 54, -10, 42], [54, 47, -9, 33],
+    [47, 40, -9, 28], [40, 36, -9, 26],
+    // Africa
+    [37, 30, -10, 34], [30, 22, -17, 38], [22, 14, -17, 44],
+    [14, 6, -17, 51], [6, -2, 7, 51], [-2, -10, 8, 42],
+    [-10, -18, 11, 40], [-18, -26, 14, 36], [-26, -35, 15, 33],
+    // Asia (main landmass)
+    [77, 68, 55, 180], [68, 58, 40, 180], [58, 48, 35, 150],
+    [48, 38, 35, 140], [38, 28, 35, 128], [28, 20, 60, 128],
+    [20, 8, 92, 140],
+    // India (tapering subcontinent)
+    [30, 24, 68, 90], [24, 18, 69, 88], [18, 12, 71, 85], [12, 7, 74, 81],
+    // Maritime Southeast Asia / Indonesia
+    [6, -10, 95, 141],
+    // Australia
+    [-11, -19, 113, 145], [-19, -27, 113, 153],
+    [-27, -35, 115, 150], [-35, -39, 140, 148],
   ];
 
   const deg = Math.PI / 180;
   const dots = [];
-  regions.forEach(([latMin, latMax, lonMin, lonMax]) => {
-    const area = (latMax - latMin) * (lonMax - lonMin);
-    const n = Math.max(18, Math.round(area / 14));
-    for (let i = 0; i < n; i++) {
-      if (Math.random() > 0.62) continue;
-      const lat = (latMin + Math.random() * (latMax - latMin)) * deg;
-      const lon = (lonMin + Math.random() * (lonMax - lonMin)) * deg;
-      dots.push({ lat, lon });
+  const GRID_STEP = 2.2; // degrees between dots — smaller = denser globe
+
+  regions.forEach(([latA, latB, lonMin, lonMax]) => {
+    const latMin = Math.min(latA, latB);
+    const latMax = Math.max(latA, latB);
+    for (let lat = latMin; lat <= latMax; lat += GRID_STEP) {
+      for (let lon = lonMin; lon <= lonMax; lon += GRID_STEP) {
+        // slight jitter so the grid doesn't look mechanically perfect
+        const jLat = lat + (Math.random() - 0.5) * GRID_STEP * 0.4;
+        const jLon = lon + (Math.random() - 0.5) * GRID_STEP * 0.4;
+        dots.push({ lat: jLat * deg, lon: jLon * deg });
+      }
     }
   });
 
